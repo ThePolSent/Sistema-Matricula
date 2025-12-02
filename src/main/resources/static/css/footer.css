@@ -1,0 +1,126 @@
+/* ============================================
+   FOOTER STYLES
+   ============================================ */
+
+.footer-custom {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: #ecf0f1;
+    margin-top: 4rem;
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.footer-logo {
+    height: 40px;
+    width: auto;
+}
+
+.footer-custom h5,
+.footer-custom h6 {
+    color: white;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.footer-custom h6::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Footer Links */
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #bdc3c7;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: white;
+    transform: translateX(5px);
+}
+
+.footer-links a i {
+    width: 20px;
+    color: #667eea;
+}
+
+/* Tech Badges */
+.tech-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tech-badges .badge {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.tech-badges .badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Divider */
+.footer-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 0;
+}
+
+/* Footer Text */
+.footer-custom .text-muted {
+    color: #95a5a6 !important;
+}
+
+.footer-custom .text-danger {
+    color: #e74c3c !important;
+    animation: heartbeat 1.5s infinite;
+}
+
+/* Animations */
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-custom {
+        text-align: center;
+    }
+    
+    .footer-custom h6::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .footer-links a {
+        justify-content: center;
+    }
+    
+    .tech-badges {
+        justify-content: center;
+    }
+}

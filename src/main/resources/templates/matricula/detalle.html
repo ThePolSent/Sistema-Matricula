@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Detalle de Matrícula</title>
+    <th:block layout:fragment="css">
+        <style>
+            .matricula-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 30px;
+                border-radius: 15px;
+                margin-bottom: 20px;
+            }
+            @media print {
+                .no-print { display: none !important; }
+                .navbar, footer { display: none !important; }
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container mt-4" th:if="${matricula != null}">
+            <div class="no-print mb-3">
+                <a th:href="@{/matricula/listar}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Volver
+                </a>
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="fas fa-print me-2"></i>Imprimir
+                </button>
+            </div>
+
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show no-print">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show no-print">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Header -->
+            <div class="matricula-header">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="mb-2">
+                            <i class="fas fa-file-alt me-2"></i>
+                            <span th:text="${matricula.codigoMatricula}"></span>
+                        </h3>
+                        <p class="mb-1">
+                            <strong>Estudiante:</strong> <span th:text="${matricula.nombreEstudiante}"></span>
+                        </p>
+                        <p class="mb-0">
+                            <strong>Período:</strong> <span th:text="${matricula.periodo}"></span> | 
+                            <strong>Ciclo:</strong> <span th:text="${matricula.ciclo}"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <span class="badge fs-5" 
+                              th:classappend="${matricula.estado.name() == 'APROBADA'} ? 'bg-success' : 
+                                             ${matricula.estado.name() == 'PENDIENTE'} ? 'bg-warning text-dark' : 
+                                             ${matricula.estado.name() == 'RECHAZADA'} ? 'bg-danger' : 'bg-secondary'"
+                              th:text="${matricula.estado}">
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <!-- Info General -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información General</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Código Estudiante:</strong> <span th:text="${matricula.codigoEstudiante}"></span></p>
+                            <p><strong>Carrera:</strong> <span th:text="${matricula.carrera}"></span></p>
+                            <p><strong>Fecha de Matrícula:</strong> 
+                               <span th:text="${#temporals.format(matricula.fechaMatricula, 'dd/MM/yyyy HH:mm')}"></span>
+                            </p>
+                            <p th:if="${matricula.fechaAprobacion != null}">
+                                <strong>Fecha de Aprobación:</strong> 
+                                <span th:text="${#temporals.format(matricula.fechaAprobacion, 'dd/MM/yyyy HH:mm')}"></span>
+                            </p>
+                            <p th:if="${matricula.aprobadoPor != null}">
+                                <strong>Aprobado Por:</strong> <span th:text="${matricula.aprobadoPor}"></span>
+                            </p>
+                            <p th:if="${matricula.observaciones != null}" class="mb-0">
+                                <strong>Observaciones:</strong><br>
+                                <span class="text-danger" th:text="${matricula.observaciones}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen Financiero -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Resumen Financiero</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between mb-3">
+                                <span><strong>Total de Cursos:</strong></span>
+                                <span class="badge bg-primary fs-6" th:text="${#lists.size(matricula.cursos)}"></span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span><strong>Total de Créditos:</strong></span>
+                                <span class="badge bg-info fs-6" th:text="${matricula.totalCreditos}"></span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <h5><strong>Costo Total:</strong></h5>
+                                <h5 class="text-success">
+                                    <strong>S/. <span th:text="${#numbers.formatDecimal(matricula.costoTotal, 1, 2)}"></span></strong>
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cursos -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-book me-2"></i>Cursos Matriculados</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre del Curso</th>
+                                    <th>Créditos</th>
+                                    <th>Docente</th>
+                                    <th>Horario</th>
+                                    <th>Aula</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="curso : ${matricula.cursos}">
+                                    <td><strong th:text="${curso.codigoCurso}"></strong></td>
+                                    <td th:text="${curso.nombreCurso}"></td>
+                                    <td><span class="badge bg-primary" th:text="${curso.creditos}"></span></td>
+                                    <td th:text="${curso.nombreDocente}"></td>
+                                    <td th:text="${curso.horario}"></td>
+                                    <td th:text="${curso.aula}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones (Solo Admin) -->
+            <div class="card no-print" th:if="${session.rol == 'ADMIN' and matricula.estado.name() == 'PENDIENTE'}">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Acciones Administrativas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form th:action="@{/matricula/aprobar/{id}(id=${matricula.id})}" method="post">
+                                <button type="submit" class="btn btn-success w-100" 
+                                        onclick="return confirm('¿Está seguro de aprobar esta matrícula?')">
+                                    <i class="fas fa-check me-2"></i>Aprobar Matrícula
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-danger w-100" 
+                                    data-bs-toggle="modal" data-bs-target="#rechazarModal">
+                                <i class="fas fa-times me-2"></i>Rechazar Matrícula
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Rechazar -->
+        <div class="modal fade" id="rechazarModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Rechazar Matrícula</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form th:action="@{/matricula/rechazar/{id}(id=${matricula.id})}" method="post">
+                        <div class="modal-body">
+                            <label class="form-label">Observaciones *</label>
+                            <textarea name="observaciones" class="form-control" rows="4" 
+                                      placeholder="Motivo del rechazo..." required></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger">Confirmar Rechazo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

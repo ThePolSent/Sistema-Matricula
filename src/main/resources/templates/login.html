@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Matrícula UTP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link th:href="@{/css/common.css}" rel="stylesheet">
+    <link th:href="@{/css/login.css}" rel="stylesheet">
+</head>
+<body class="login-body">
+    <!-- Navbar Simple -->
+    <nav class="navbar navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img th:src="@{/images/logo.png}" alt="UTP Logo" class="logo-img-small" 
+                     onerror="this.style.display='none'">
+                <span class="ms-2">Sistema de Matrícula UTP</span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 col-md-7">
+                    <div class="login-card">
+                        <!-- Header del Login -->
+                        <div class="login-header">
+                            <div class="login-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h2 class="mb-2">Bienvenido</h2>
+                            <p class="text-muted mb-0">Sistema de Matrícula Universitaria</p>
+                        </div>
+
+                        <!-- Alertas -->
+                        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span th:text="${error}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <span th:text="${mensaje}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+
+                        <!-- Formulario de Login -->
+                        <form th:action="@{/login}" method="post" class="login-form">
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-user me-2 text-primary"></i>Usuario
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-user"></i>
+                                    </span>
+                                    <input type="text" name="username" class="form-control" 
+                                           placeholder="Ingrese su usuario" required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-lock me-2 text-primary"></i>Contraseña
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" name="password" class="form-control" 
+                                           placeholder="Ingrese su contraseña" required id="passwordInput">
+                                    <button class="btn btn-outline-secondary" type="button" 
+                                            onclick="togglePassword()">
+                                        <i class="fas fa-eye" id="toggleIcon"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Recordar mi sesión
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-login w-100 mb-3">
+                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                            </button>
+                        </form>
+
+                        <!-- Registro -->
+                        <div class="login-footer">
+                            <p class="text-center text-muted mb-3">¿No tienes cuenta?</p>
+                            <a th:href="@{/registro}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-user-plus me-2"></i>Registrarse
+                            </a>
+                        </div>
+
+                        <!-- Info adicional -->
+                        <div class="text-center mt-4">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Conexión segura con Spring Security
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Tecnologías -->
+                    <div class="text-center mt-4">
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-database me-2"></i>
+                            Powered by MySQL + PostgreSQL + MongoDB
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Simple -->
+    <footer class="login-footer-simple">
+        <div class="container text-center">
+            <p class="mb-0 text-muted small">
+                &copy; 2025 Sistema de Matrícula UTP - Proyecto de Lenguajes de Programación
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('toggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

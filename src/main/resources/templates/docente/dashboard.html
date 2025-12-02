@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Dashboard Docente</title>
+    <th:block layout:fragment="css">
+        <link th:href="@{/css/dashboard.css}" rel="stylesheet">
+    </th:block>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container-fluid mt-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="mb-1">
+                        <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>Dashboard Docente
+                    </h2>
+                    <p class="text-muted mb-0">Bienvenido, <span th:text="${session.nombreCompleto}">Docente</span></p>
+                </div>
+                <span class="badge bg-primary fs-6" th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span>
+            </div>
+
+            <!-- Información del Docente -->
+            <div class="card mb-4" th:if="${docente != null}">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>Información Personal</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>Código:</strong></p>
+                            <p th:text="${docente.codigo}"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>Especialidad:</strong></p>
+                            <p th:text="${docente.especialidad}"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>Grado:</strong></p>
+                            <p th:text="${docente.gradoAcademico}"></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p class="mb-1"><strong>Tipo:</strong></p>
+                            <p th:text="${docente.tipoContrato}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card bg-primary">
+                        <div class="text-center">
+                            <i class="fas fa-book fa-3x mb-3"></i>
+                            <h2 class="mb-0">5</h2>
+                            <p class="mb-0 text-white-50">Cursos Asignados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card bg-success">
+                        <div class="text-center">
+                            <i class="fas fa-users fa-3x mb-3"></i>
+                            <h2 class="mb-0">120</h2>
+                            <p class="mb-0 text-white-50">Estudiantes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card bg-warning">
+                        <div class="text-center">
+                            <i class="fas fa-clock fa-3x mb-3"></i>
+                            <h2 class="mb-0">18</h2>
+                            <p class="mb-0 text-white-50">Horas Semanales</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <div class="stat-card bg-info">
+                        <div class="text-center">
+                            <i class="fas fa-calendar fa-3x mb-3"></i>
+                            <h2 class="mb-0">2025-1</h2>
+                            <p class="mb-0 text-white-50">Período Actual</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Mis Cursos -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0"><i class="fas fa-book me-2"></i>Mis Cursos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Base de Datos II</h6>
+                                        <span class="badge bg-primary">30 alumnos</span>
+                                    </div>
+                                    <small class="text-muted">5 créditos | Ciclo 5 | Ing. Sistemas</small>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Lenguajes de Programación</h6>
+                                        <span class="badge bg-primary">28 alumnos</span>
+                                    </div>
+                                    <small class="text-muted">4 créditos | Ciclo 5 | Ing. Sistemas</small>
+                                </div>
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">Ingeniería de Software II</h6>
+                                        <span class="badge bg-primary">32 alumnos</span>
+                                    </div>
+                                    <small class="text-muted">4 créditos | Ciclo 5 | Ing. Sistemas</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Horario de Clases -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>Horario Semanal</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>Hora</th>
+                                            <th>Lunes</th>
+                                            <th>Miércoles</th>
+                                            <th>Viernes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><small><strong>08:00-10:00</strong></small></td>
+                                            <td class="table-primary">
+                                                <small><strong>BD II</strong><br>A-301</small>
+                                            </td>
+                                            <td class="table-primary">
+                                                <small><strong>BD II</strong><br>Lab 2</small>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><small><strong>10:00-12:00</strong></small></td>
+                                            <td></td>
+                                            <td class="table-success">
+                                                <small><strong>Leng. Prog</strong><br>B-102</small>
+                                            </td>
+                                            <td class="table-success">
+                                                <small><strong>Leng. Prog</strong><br>Lab 1</small>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><small><strong>14:00-16:00</strong></small></td>
+                                            <td></td>
+                                            <td class="table-info">
+                                                <small><strong>IS II</strong><br>C-201</small>
+                                            </td>
+                                            <td class="table-info">
+                                                <small><strong>IS II</strong><br>C-201</small>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acciones Rápidas -->
+            <div class="card">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0"><i class="fas fa-bolt me-2"></i>Acciones Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-2">
+                            <button class="btn btn-primary w-100">
+                                <i class="fas fa-clipboard-list me-2"></i>Asistencia
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <button class="btn btn-success w-100">
+                                <i class="fas fa-edit me-2"></i>Registrar Notas
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <button class="btn btn-info w-100">
+                                <i class="fas fa-users me-2"></i>Ver Estudiantes
+                            </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <a th:href="@{/docente/perfil}" class="btn btn-warning w-100">
+                                <i class="fas fa-user-edit me-2"></i>Mi Perfil
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
